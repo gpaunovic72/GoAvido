@@ -1,7 +1,7 @@
 import Image from "next/image";
+import Footer from "./components/Footer";
 import Header_login from "./components/Header_login";
 import Signup from "./components/signup";
-
 export default function Home() {
   return (
     <div className="min-h-screen relative w-full max-w-screen-2xl mx-auto">
@@ -24,6 +24,7 @@ export default function Home() {
           <Signup />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
