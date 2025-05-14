@@ -1,5 +1,6 @@
 "use client";
 import { SignupFormData, signupSchema } from "@/lib/validations/signup";
+import { signup } from "@/services/auth/signup";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useState } from "react";
@@ -15,8 +16,13 @@ export default function Signup() {
     mode: "onChange",
   });
 
-  const onsubmit = (data: SignupFormData) => {
-    console.log(data);
+  const onsubmit = async (data: SignupFormData) => {
+    try {
+      const response = await signup(data.name, data.email, data.password);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="flex flex-col gap-4 bg-white p-8">
