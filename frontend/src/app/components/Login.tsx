@@ -53,7 +53,7 @@ export default function Login() {
               alt="eye"
               width={24}
               height={24}
-              className="absolute right-0 top-0 cursor-pointer"
+              className="absolute right-2 top-1 cursor-pointer w-6 h-6"
               onClick={() => setShowPassword(!showPassword)}
             />
             {errors.password && (

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 interface SignupResponse {
   success: boolean;
@@ -31,18 +31,33 @@ export const signup = async (
         password,
       }
     );
-    return response.data;
+
+    // Si la réponse est un succès (status 2xx)
+    if (response.status >= 200 && response.status < 300) {
+      return {
+        success: true,
+        message: response.data.message,
+        user: response.data.user,
+      };
+    }
+
+    // Si on arrive ici, c'est une erreur
+    throw {
+      message:
+        response.data.message ||
+        "Une erreur est survenue lors de l'inscription",
+      status: response.status,
+    };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw {
         message:
-          error.response?.data?.message ||
-          "Une erreur est survenue lors de l'inscription",
+          error.response?.data?.message || "An error occurred while signing up",
         status: error.response?.status,
       } as SignupError;
     }
     throw {
-      message: "Une erreur inattendue est survenue",
+      message: "An unexpected error occurred",
     } as SignupError;
   }
 };

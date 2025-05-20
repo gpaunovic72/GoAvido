@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import http from "http";
+import auth from "./routes/auth";
 
 dotenv.config();
 
@@ -28,9 +29,11 @@ const port = normalizePort(process.env.PORT || "3001");
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", auth);
+
 // Route de test
 app.get("/", (req, res) => {
-  res.json({ message: "Bienvenue sur l'API de Goavido" });
+  res.json({ message: "Welcome to the Goavido API" });
 });
 
 // Création du serveur HTTP

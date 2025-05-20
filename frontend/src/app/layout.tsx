@@ -10,7 +10,7 @@ const figtree = Figtree({
 export const metadata: Metadata = {
   title: "GoAvido",
   description:
-    "GoAvido est un réseau social pour les personnes qui veulent partager des montages photos et s'amuser avec leurs amis",
+    "GoAvido is a social network for people who want to share photos and have fun with their friends",
 };
 
 export default function RootLayout({
