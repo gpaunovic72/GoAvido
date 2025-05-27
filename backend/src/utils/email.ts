@@ -15,14 +15,16 @@ export const sendVerificationEmail = async (
         pass: process.env.SMTP_PASS,
       },
     });
+
+    const verificationLink = `${process.env.FRONTEND_URL}/verify?token=${token}`;
+
     const mailOptions = {
       from: process.env.SMTP_FROM,
       to: email,
       subject: "Verify your email for your account GoAvido",
-      text: `Please verify your email by clicking on the link below: ${process.env.FRONTEND_URL}/verify/${token}`,
       html: `<h1>Hello ${name}</h1>
       <p>Please verify your email by clicking on the link below:</p>
-      <a href="${process.env.FRONTEND_URL}/verify/${token}">Verify your email</a> <br>
+      <a href="${verificationLink}">Verify your email</a> <br>
       <p>Thank you for signing up for GoAvido.</p>
       <p>Best regards, <br>
       The GoAvido team</p>`,

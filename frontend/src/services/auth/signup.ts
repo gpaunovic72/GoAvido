@@ -32,7 +32,6 @@ export const signup = async (
       }
     );
 
-    // Si la réponse est un succès (status 2xx)
     if (response.status >= 200 && response.status < 300) {
       return {
         success: true,
@@ -41,11 +40,8 @@ export const signup = async (
       };
     }
 
-    // Si on arrive ici, c'est une erreur
     throw {
-      message:
-        response.data.message ||
-        "Une erreur est survenue lors de l'inscription",
+      message: response.data.message || "An error occurred while signing up",
       status: response.status,
     };
   } catch (error) {

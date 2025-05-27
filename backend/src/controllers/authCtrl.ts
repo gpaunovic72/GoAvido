@@ -38,11 +38,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     });
 
     try {
-      await sendVerificationEmail(
-        email,
-        name,
-        `${process.env.FRONTEND_URL}/verify/${confirmationToken}`
-      );
+      await sendVerificationEmail(email, name, confirmationToken);
       res.json({
         success: true,
         message:
@@ -51,6 +47,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
           id: user.id,
           name: user.name,
           email: user.email,
+          confirmationToken,
         },
       });
     } catch (error) {

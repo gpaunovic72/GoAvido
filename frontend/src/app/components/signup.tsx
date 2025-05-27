@@ -8,9 +8,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Signup() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const router = useRouter();
 
   const {
@@ -27,11 +28,9 @@ export default function Signup() {
     try {
       setErrorMessage("");
       const response = await signup(data.name, data.email, data.password);
-
       if (response.success) {
         reset();
-        router.push("/verify");
-        return;
+        router.push(`/verify`);
       }
       setErrorMessage(response.message || "Error while signing up");
     } catch (error) {

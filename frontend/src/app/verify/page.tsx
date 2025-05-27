@@ -1,3 +1,5 @@
+import VerifyTokenEmail from "@/app/components/VerifyTokenEmail";
+
 export default function Verify() {
-  return <div>Verify</div>;
+  return <VerifyTokenEmail />;
 }
