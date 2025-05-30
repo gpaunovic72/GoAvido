@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
+import { createSession } from "../lib/session";
 import { sendVerificationEmail } from "../utils/email";
 
 export const signup = async (req: Request, res: Response): Promise<void> => {
@@ -47,11 +48,9 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
           id: user.id,
           name: user.name,
           email: user.email,
-          confirmationToken,
         },
       });
     } catch (error) {
-      // On supprime l'utilisateur si l'envoi d'email échoue
       await prisma.user.delete({
         where: { id: user.id },
       });
@@ -64,6 +63,42 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({
       success: false,
       message: "An error occurred while signing up",
+    });
+  }
+};
+
+export const login = async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
+
+    if (!user) {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+      return;
+    }
+
+    createSession(req, res, user.id);
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while logging in",
     });
   }
 };

@@ -1,24 +1,38 @@
 "use client";
 
 import { LoginFormData, loginSchema } from "@/lib/validations/login";
+import { login } from "@/services/auth/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Login() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const response = await login(data.email, data.password);
+      if (response.success) {
+        reset();
+        router.push("/home");
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("An error occurred while logging in");
+    }
   };
 
   return (
@@ -79,6 +93,9 @@ export default function Login() {
           )}
         </button>
       </form>
+      {errorMessage && (
+        <p className="text-red-500 text-sm text-center">{errorMessage}</p>
+      )}
     </div>
   );
 }
