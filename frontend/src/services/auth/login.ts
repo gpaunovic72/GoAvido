@@ -7,6 +7,7 @@ type LoginResponse = {
   user?: {
     email: string;
     password: string;
+    token: string;
   };
 };
 
@@ -23,6 +24,9 @@ export const login = async (email: string, password: string) => {
       {
         email,
         password,
+      },
+      {
+        withCredentials: true,
       }
     );
     return response.data;
