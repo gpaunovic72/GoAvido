@@ -9,7 +9,7 @@ export const createSession = (req: Request, res: Response, userId: string) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: parseInt(process.env.SESSION_EXPIRES_IN || "3600000"), // 1h en millisecondes
+    maxAge: parseInt(process.env.SESSION_EXPIRES_IN || "604800000"),
     path: "/",
     domain:
       process.env.NODE_ENV === "production"
