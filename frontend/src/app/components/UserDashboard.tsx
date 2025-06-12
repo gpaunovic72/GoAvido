@@ -1,11 +1,24 @@
 "use client";
+import { getUserMe } from "@/services/user/getUserMe";
+import { UserProfile } from "@/types/user";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function UserDashboard() {
-  const user = {
-    name: "John Doe",
-  };
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const user = await getUserMe();
+        setUser(user);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUser();
+  }, []);
 
   const navItemClass =
     "flex items-center justify-center gap-2 hover:opacity-80 transition-opacity w-1/2";
@@ -22,13 +35,13 @@ export default function UserDashboard() {
     <div className={containerClass}>
       <div className={headerClass}>
         <Image
-          src="/icons/icon-user.svg"
+          src={user?.pictureUrl || "/icons/icon-user.svg"}
           alt="Picture of the author"
           width={68}
           height={68}
           className="rounded-full w-18 h-18 border-2 border-gray-300 object-cover text-gray-400 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36"
         />
-        <h1 className={textClass}>Welcome back, {user.name}</h1>
+        <h1 className={textClass}>Welcome back, {user?.name}</h1>
       </div>
       <hr className="border-gray-300 border-1 m-4" />
       <div className="flex flex-col gap-4 m-4 sm:flex-row">

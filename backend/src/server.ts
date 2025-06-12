@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import auth from "./routes/auth";
+import userRoutes from "./routes/user";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth", auth);
+app.use("/api/user", userRoutes);
 
 // Route de test
 app.get("/", (req, res) => {
