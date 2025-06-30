@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import UserDashboard from "../components/UserDashboard";
+import UserDashboard from "../components/dashboard/UserDashboard";
 export default function Home() {
   return (
     <div className="flex flex-col h-screen relative overflow-hidden bg-[#F5F5F5]">

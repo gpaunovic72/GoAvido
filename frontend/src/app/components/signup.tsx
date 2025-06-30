@@ -42,9 +42,9 @@ export default function Signup() {
   return (
     <div className="flex flex-col gap-4 bg-white p-8">
       <form onSubmit={handleSubmit(onsubmit)}>
-        <h2 className="text-2xl text-black font-medium font-[family-name:var(--font-figtree)] mb-8">
+        <h1 className="text-2xl text-black font-medium font-[family-name:var(--font-figtree)] mb-8">
           Get Started - it&apos;s Free for limited time!
-        </h2>
+        </h1>
         {errorMessage && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
             <p className="text-red-600 text-sm">{errorMessage}</p>

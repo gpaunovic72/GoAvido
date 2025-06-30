@@ -3,22 +3,29 @@ import { getUserMe } from "@/services/user/getUserMe";
 import { UserProfile } from "@/types/user";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UserDashboard() {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
       try {
+        setIsLoading(true);
         const user = await getUserMe();
         setUser(user);
       } catch (error) {
+        router.push("/");
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getUser();
-  }, []);
+  }, [router]);
 
   const navItemClass =
     "flex items-center justify-center gap-2 hover:opacity-80 transition-opacity w-1/2";
@@ -33,16 +40,30 @@ export default function UserDashboard() {
 
   return (
     <div className={containerClass}>
-      <div className={headerClass}>
-        <Image
-          src={user?.pictureUrl || "/icons/icon-user.svg"}
-          alt="Picture of the author"
-          width={68}
-          height={68}
-          className="rounded-full w-18 h-18 border-2 border-gray-300 object-cover text-gray-400 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36"
-        />
-        <h1 className={textClass}>Welcome back, {user?.name}</h1>
-      </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center h-screen">
+          <Image
+            src="/icons/loading.svg"
+            alt="Loading"
+            width={100}
+            height={100}
+            className="w-10 h-10 animate-spin"
+          />
+        </div>
+      ) : (
+        <div className={headerClass}>
+          <div className="rounded-full w-18 h-18 border-2 border-gray-300 overflow-hidden flex items-center justify-center sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36">
+            <Image
+              src={user?.pictureUrl || "/icons/icon-user.svg"}
+              alt="Picture of the author"
+              width={160}
+              height={160}
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <h1 className={textClass}>Welcome back, {user?.name}</h1>
+        </div>
+      )}
       <hr className="border-gray-300 border-1 m-4" />
       <div className="flex flex-col gap-4 m-4 sm:flex-row">
         <div className="flex items-center w-full">

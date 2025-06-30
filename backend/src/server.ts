@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import http from "http";
+import path from "path";
 import auth from "./routes/auth";
 import userRoutes from "./routes/user";
 
@@ -41,6 +42,9 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Servir les fichiers uploads
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/auth", auth);
 app.use("/api/user", userRoutes);
