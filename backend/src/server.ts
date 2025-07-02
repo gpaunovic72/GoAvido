@@ -7,6 +7,7 @@ import express from "express";
 import http from "http";
 import path from "path";
 import auth from "./routes/auth";
+import galleryRoutes from "./routes/gallery";
 import userRoutes from "./routes/user";
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/auth", auth);
 app.use("/api/user", userRoutes);
+app.use("/api/gallery", galleryRoutes);
 
 // Route de test
 app.get("/", (req, res) => {

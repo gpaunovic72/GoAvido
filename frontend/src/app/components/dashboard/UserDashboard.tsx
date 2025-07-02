@@ -3,14 +3,14 @@ import { getUserMe } from "@/services/user/getUserMe";
 import { UserProfile } from "@/types/user";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UserDashboard() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-
+  const pathname = usePathname();
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -75,7 +75,13 @@ export default function UserDashboard() {
               height={28}
               className={iconClass}
             />
-            <h2 className={textClass}>Home</h2>
+            <h2
+              className={`${textClass} ${
+                pathname === "/home" ? "!text-amber-600 font-bold" : ""
+              }`}
+            >
+              Home
+            </h2>
           </Link>
           <Link href="/gallery" className={navItemClass}>
             <Image
@@ -85,7 +91,13 @@ export default function UserDashboard() {
               height={28}
               className={iconClass}
             />
-            <h2 className={textClass}>Gallery</h2>
+            <h2
+              className={`${textClass} ${
+                pathname === "/gallery" ? "!text-amber-600 font-bold" : ""
+              }`}
+            >
+              Gallery
+            </h2>
           </Link>
         </div>
         <div className="flex items-center w-full">
@@ -97,7 +109,13 @@ export default function UserDashboard() {
               height={28}
               className={iconClass}
             />
-            <h2 className={textClass}>News</h2>
+            <h2
+              className={`${textClass} ${
+                pathname === "/news" ? "!text-amber-600 font-bold" : ""
+              }`}
+            >
+              News
+            </h2>
           </Link>
           <Link href="/profile" className={navItemClass}>
             <Image
@@ -107,7 +125,13 @@ export default function UserDashboard() {
               height={28}
               className={iconClass}
             />
-            <h2 className={textClass}>Profile</h2>
+            <h2
+              className={`${textClass} ${
+                pathname === "/profile" ? "!text-amber-600 font-bold" : ""
+              }`}
+            >
+              Profile
+            </h2>
           </Link>
         </div>
       </div>
