@@ -7,7 +7,9 @@ import TakeOfPictures from "../components/galleryPage/TakeOfPictures";
 import Header from "../components/Header";
 
 export default function Gallery() {
-  const [pictures, setPictures] = useState<string[]>([]);
+  const [pictures, setPictures] = useState<{ id: string; mediaUrl: string }[]>(
+    []
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   // Fonction pour récupérer toutes les images
@@ -29,6 +31,10 @@ export default function Gallery() {
     await fetchPictures();
   };
 
+  const handlePictureDeleted = (id: string) => {
+    setPictures((prev) => prev.filter((picture) => picture.id !== id));
+  };
+
   // Chargement initial
   useEffect(() => {
     fetchPictures();
@@ -44,7 +50,11 @@ export default function Gallery() {
           Gallery
         </h1>
         <TakeOfPictures onPictureUploaded={handlePictureUploaded} />
-        <GalleryPictures pictures={pictures} isLoading={isLoading} />
+        <GalleryPictures
+          pictures={pictures}
+          isLoading={isLoading}
+          onDelete={handlePictureDeleted}
+        />
       </div>
     </div>
   );

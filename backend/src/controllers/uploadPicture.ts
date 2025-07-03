@@ -45,9 +45,43 @@ export const getPictures = async (
       },
     });
 
-    res
-      .status(200)
-      .json({ pictures: pictures.map((picture) => picture.mediaUrl) });
+    res.status(200).json({
+      pictures: pictures.map((picture) => ({
+        id: picture.id,
+        mediaUrl: picture.mediaUrl,
+      })),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deletePicture = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const picture = await prisma.post.findUnique({
+      where: {
+        id,
+        authorId: req.userId as string,
+        type: "PICTURE",
+      },
+    });
+    if (!picture) {
+      res.status(404).json({ message: "Picture not found" });
+      return;
+    }
+    await prisma.post.deleteMany({
+      where: {
+        id,
+        authorId: req.userId as string,
+        type: "PICTURE",
+      },
+    });
+    res.status(200).json({ message: "Picture deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
