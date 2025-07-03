@@ -5,7 +5,8 @@ export default function middleware(request: NextRequest) {
   const token = request.cookies.get("auth_token");
   const isProtectedRoute =
     request.nextUrl.pathname.startsWith("/home") ||
-    request.nextUrl.pathname.startsWith("/profile");
+    request.nextUrl.pathname.startsWith("/profile") ||
+    request.nextUrl.pathname.startsWith("/gallery");
 
   if (isProtectedRoute && !token) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -14,5 +15,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/home", "/profile"],
+  matcher: ["/home", "/profile", "/gallery"],
 };

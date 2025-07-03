@@ -14,7 +14,11 @@ function base64ToBlob(base64: string, filename: string): File {
   return new File([u8arr], filename, { type: mime });
 }
 
-export default function TakeOfPictures() {
+export default function TakeOfPictures({
+  onPictureUploaded,
+}: {
+  onPictureUploaded: () => void;
+}) {
   const videoConstraints = {
     width: 1280,
     height: 720,
@@ -27,7 +31,9 @@ export default function TakeOfPictures() {
     if (!imageSrc) return;
     const file = base64ToBlob(imageSrc, "capture.jpg");
     const response = await postCapturePicture(file);
-    console.log(response);
+    if (response && response.success) {
+      onPictureUploaded();
+    }
   };
 
   return (
