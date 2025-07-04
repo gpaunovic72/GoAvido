@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import fs from "fs";
+import path from "path";
 import prisma from "../lib/prisma";
 
 export const uploadPicture = async (
@@ -74,6 +76,19 @@ export const deletePicture = async (
       res.status(404).json({ message: "Picture not found" });
       return;
     }
+
+    // Supprimer le fichier du dossier uploads
+    if (picture.mediaUrl) {
+      const filename = picture.mediaUrl.split("/").pop(); // Récupère le nom du fichier
+      if (filename) {
+        const filePath = path.join(__dirname, "../../uploads", filename);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    }
+
+    // Supprimer de la base de données
     await prisma.post.deleteMany({
       where: {
         id,
