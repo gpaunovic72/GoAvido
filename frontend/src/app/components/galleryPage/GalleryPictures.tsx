@@ -63,17 +63,20 @@ export default function GalleryPictures({
         {pictures.map((picture, index) => (
           <div
             key={index}
-            className="flex flex-col items-center aspect-square rounded-lg overflow-hidden shadow group transition hover:scale-105 hover:shadow-lg bg-gray-100 border border-gray-200 w-full"
+            className="flex flex-col items-center rounded-lg overflow-hidden shadow group transition hover:scale-105 hover:shadow-lg bg-gray-100 border border-gray-200 w-full"
           >
-            <Image
-              src={picture.mediaUrl}
-              alt={`Picture ${index}`}
-              width={100}
-              height={100}
-              className="object-cover w-full h-full transition duration-200 group-hover:opacity-90 text-black"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 20vw"
-              property={`picture-${index}`}
-            />
+            <div className="aspect-square w-full">
+              <Image
+                src={picture.mediaUrl}
+                alt={`Picture ${index}`}
+                width={100}
+                height={100}
+                className="object-cover w-full h-full transition duration-200 group-hover:opacity-90 text-black cursor-pointer"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 20vw"
+                property={`picture-${index}`}
+                onClick={() => window.open(picture.mediaUrl, "_blank")}
+              />
+            </div>
             <div className="flex flex-row justify-center p-2 gap-2 w-full">
               <button className="text-gray-500 hover:text-gray-700 bg-white rounded-lg px-2 py-1 text-sm flex-1 flex items-center justify-center truncate cursor-pointer hover:scale-105 transition-all duration-200">
                 <ShareIcon className="w-5 h-5 xl:mr-2" />
